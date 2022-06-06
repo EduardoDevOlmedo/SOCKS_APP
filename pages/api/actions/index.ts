@@ -44,7 +44,7 @@ const postProduct = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
         title, 
         description,
         price,
-        image
+        image,
     })
     try {
         await db.connect()

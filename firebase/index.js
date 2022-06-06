@@ -1,8 +1,7 @@
-import firebase from 'firebase/app';
-import 'firebase/storage';
-
+import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: "AIzaSyBUJFnfp4NCnXG_1Vle-MQpb7YWB7p-m64",
     authDomain: "socks-images.firebaseapp.com",
     projectId: "socks-images",
@@ -12,11 +11,6 @@ const firebaseConfig = {
     measurementId: "G-MH2Z1W2F31"
 };
 
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
 
-const storage = firebase.storage();
-
-
-export { storage, firebase as default };
+export const app = initializeApp(firebaseConfig);
+export const storage = getStorage(app);

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import { storage } from '../../firebase'
+import { firebaseConfig, storage } from '../../firebase'
 import { ProductContext } from '../../context/product'
 
 interface Props {
@@ -10,6 +10,10 @@ interface Props {
 
 const UpdatePage:React.FC<Props> = ({product, id}) => {
   
+  
+  initializeApp(firebaseConfig)
+
+  const storage = getStorage()
   const {updateProduct} = useContext(ProductContext)
   const [image, setImage] = useState<null>(null)
   const [url, setUrl] = useState("");
@@ -47,43 +51,49 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
   }
 
   const handleImageDelete = (url: string) => {
-    const fileRef = storage.refFromURL(url)
-    fileRef.delete()
+    console.log(url)
+    const imageRef = ref(storage, `${url}`)
+    try {
+      deleteObject(imageRef).then(() => {
+        console.log('Image successfully deleted')
+      }) 
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 
   const handleUpload = () => {
    
-  try {
-    const uploadTask = storage.ref(`images/${!image!['name']}`).put(image);
-    uploadTask.on(
-      "state_changed",
-      snapshot => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(progress);
-      },
-      error => {
-        console.log(error);
-      },
-      () => {
-        storage
-          .ref("images")
-          .child(image!['name'])
-          .getDownloadURL()
-          .then(url => {
+    try {
+      const storageRef = ref(storage, `images/${image!['name']}`)
+      const uploadTask = uploadBytesResumable(storageRef, image!)
+      
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(progress);
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url: string) => {
             setUrl(url)
-            setnewProduct({
-              ...newProduct,
-              image: url ? url : product.image
+              setnewProduct({
+                ...newProduct,
+                image: url ? url : product.image
             })
-          });
-      }
-    );
-  } catch (error) {
-    console.log(error)
-  }
+        });;
+        }
+      );
+     
+    } catch (error) {
+      console.log(error)   
+    }
    
    
   };
@@ -124,6 +134,8 @@ import { GetServerSideProps } from 'next'
 import { ProductFunctions } from '../../database'
 import { IProduct } from '../../interfaces'
 import Router from 'next/router'
+import { getStorage, ref, deleteObject, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
+import { initializeApp } from 'firebase/app'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params as {id: string}  // your fetch function here 

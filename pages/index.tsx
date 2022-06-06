@@ -2,24 +2,30 @@ import { GetStaticProps } from 'next'
 import { useContext, useEffect, useState } from 'react'
 import { ProductFunctions } from '../database'
 import type { NextPage } from 'next'
-import {storage} from "../firebase"
 import { ProductContext } from '../context/product'
 import { IProduct } from '../interfaces'
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
+import { initializeApp } from 'firebase/app'
+import { firebaseConfig } from '../firebase'
 
 const Home: NextPage = () => {
-   
+  
+  initializeApp(firebaseConfig)
+
   const {products, addProduct, deleteProduct} = useContext(ProductContext)
   const [image, setImage] = useState<null>(null)
   const [url, setUrl] = useState("");
   const [progress, setProgress] = useState(0);
+  const storage = getStorage()
   const [product, setProduct] = useState(
     {
       title: '',
       price: 0,
       imgUrl: url,
-      description: ''
+      description: '',
     }
   )
+
 
   const handleChange = (e: any) => {
     if(e.target.files[0]){
@@ -35,8 +41,14 @@ const Home: NextPage = () => {
   }
 
   const handleImageDelete = (url: string) => {
-    const fileRef = storage.refFromURL(url)
-    fileRef.delete()
+    const imageRef = ref(storage, `${url}`)
+    try {
+      deleteObject(imageRef).then(() => {
+        console.log('Image successfully deleted')
+      }) 
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 
@@ -44,7 +56,9 @@ const Home: NextPage = () => {
 
   const handleUpload = () => {
     try {
-      const uploadTask = storage.ref(`images/${image!['name']}`).put(image);
+      const storageRef = ref(storage, `${image!['name']}`)
+      const uploadTask = uploadBytesResumable(storageRef, image!)
+      
       uploadTask.on(
         "state_changed",
         snapshot => {
@@ -57,17 +71,13 @@ const Home: NextPage = () => {
           console.log(error);
         },
         () => {
-          storage
-            .ref("images")
-            .child(image!['name'])
-            .getDownloadURL()
-            .then(url => {
-              setUrl(url)
+          getDownloadURL(uploadTask.snapshot.ref).then((url: string) => {
+            setUrl(url)
               setProduct({
                 ...product,
                 imgUrl: url
-              })
-            });
+            })
+        });;
         }
       );
      
@@ -83,7 +93,7 @@ const Home: NextPage = () => {
       product.title,
       product.description,
       product.price,
-      product.imgUrl
+      product.imgUrl,
     )
   }
 

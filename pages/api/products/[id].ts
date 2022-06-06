@@ -34,7 +34,8 @@ const updateProduct =  async(req: NextApiRequest, res: NextApiResponse<Data>)  =
         title = productToUpdate.title,
         description = productToUpdate.description,
         price = productToUpdate.price,
-        image = productToUpdate.image
+        image = productToUpdate.image,
+        type = productToUpdate.type
     } = req.body;
 
     try {
