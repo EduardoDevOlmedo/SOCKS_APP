@@ -1,19 +1,23 @@
 import { GetStaticProps } from 'next'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ProductFunctions } from '../database'
 import type { NextPage } from 'next'
 import {storage} from "../firebase"
+import { ProductContext } from '../context/product'
+import { IProduct } from '../interfaces'
 
-const Home: NextPage = ({data}) => {
+const Home: NextPage = () => {
    
+  const {products, addProduct, deleteProduct} = useContext(ProductContext)
   const [image, setImage] = useState<null>(null)
   const [url, setUrl] = useState("");
   const [progress, setProgress] = useState(0);
   const [product, setProduct] = useState(
     {
       title: '',
-      price: '',
-      imgUrl: ''
+      price: 0,
+      imgUrl: url,
+      description: ''
     }
   )
 
@@ -26,7 +30,7 @@ const Home: NextPage = ({data}) => {
   const handleInputChange = (e: any) => {
     setProduct({
       ...product,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
@@ -36,60 +40,85 @@ const Home: NextPage = ({data}) => {
   }
 
 
-  const handleUpload = () => {
-    const uploadTask = storage.ref(`images/${image!['name']}`).put(image);
-    uploadTask.on(
-      "state_changed",
-      snapshot => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(progress);
-      },
-      error => {
-        console.log(error);
-      },
-      () => {
-        storage
-          .ref("images")
-          .child(image!['name'])
-          .getDownloadURL()
-          .then(url => {
-            setUrl(url);
-            product.imgUrl = url;
-          });
-      }
-    );
 
+
+  const handleUpload = () => {
+    try {
+      const uploadTask = storage.ref(`images/${image!['name']}`).put(image);
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(progress);
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          storage
+            .ref("images")
+            .child(image!['name'])
+            .getDownloadURL()
+            .then(url => {
+              setUrl(url)
+              setProduct({
+                ...product,
+                imgUrl: url
+              })
+            });
+        }
+      );
+     
+    } catch (error) {
+      console.log(error)   
+    }
+    
   };
   
-  console.log(data)
+
+  const handleAdd = () => {
+    addProduct(
+      product.title,
+      product.description,
+      product.price,
+      product.imgUrl
+    )
+  }
+
+  const handleDelete = (product: IProduct) => {
+    deleteProduct(product)
+    handleImageDelete(product.image)
+  }
+
 
   return (
     <div>
-      <progress value={progress} max="100" />
+      <h3>{progress}</h3>
       <br />
       <br />
       <input name='title' value={product.title} onChange={handleInputChange} placeholder="titulo" />
-      <input name='price' value={product.price} onChange={handleInputChange} placeholder='PRECIO' />
+      <input name='description' value={product.description} onChange={handleInputChange} placeholder="descripcion" />
+      <input name='price' value={product.price} onChange={handleInputChange} placeholder='PRECIO' type="number" />
       <input type="file" onChange={handleChange} />
-      <button onClick={handleUpload}>Upload</button>
+      <button onClick={handleUpload}>Subir imagen</button>
+      <button onClick={handleAdd}>Añadir</button>
       <br />
       {url}
       <br />
-      <img src={url || "http://via.placeholder.com/300"} alt="firebase-image" />
-
+      <img style={{height: '200px'}} src={url || "http://via.placeholder.com/300"} alt="firebase-image" />
       <h1>Imagenes de la DB</h1>
 
       {
-        data.map(element => {
+        products.map(element => {
           return(
-            <div key={element.title}>
+            <div key={element.description}>
                 <h3>{element.title}</h3>
                 <p>{element.description}</p>
                 <p>{element.price}</p>
                 <img  style={{height: '200px'}} src={element.image}></img>
-                <button onClick={() => handleImageDelete(element.image)}>Borrar</button>
+                <button onClick={() => handleDelete(element)}>Borrar</button>
             </div>
           )
         })
@@ -106,7 +135,6 @@ export default Home
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const data = await ProductFunctions.getProducts() // your fetch function here 
   
-  console.log(data)
   return {
     props: {
       data
