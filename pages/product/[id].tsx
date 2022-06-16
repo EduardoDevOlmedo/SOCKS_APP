@@ -9,6 +9,7 @@ import { AuthContext } from '../../context/auth'
 import { getStorage, ref, deleteObject } from 'firebase/storage'
 import { ProductContext } from '../../context/product'
 import { useRouter } from "next/router"
+import Footer from '../../components/ui/Footer'
 
 interface Props {
     product: IProduct
@@ -58,7 +59,7 @@ const ProductPage: React.FC<Props> = ({product, id}) => {
       <Card sx={{width: '100%'}}>
 
         <CardContent 
-          sx={{height: {xs: '300px', md: '400px', lg: '500px'}, width: '100%', objectFit: 'cover'}}
+          sx={{height: {xs: '300px', md: '400px', lg: 'auto'}, width: '100%', objectFit: 'cover'}}
           component="img"
           src={image}
           alt={title}
@@ -107,6 +108,7 @@ const ProductPage: React.FC<Props> = ({product, id}) => {
                {CTAPaymentMethods}
             </Typography>
             </Grid>
+        <Footer />
         </Grid>
      </Grid>
     </ProductLayout>

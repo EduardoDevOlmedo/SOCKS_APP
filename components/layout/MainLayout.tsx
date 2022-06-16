@@ -1,10 +1,9 @@
 import { Add } from '@mui/icons-material';
 import { IconButton,  useMediaQuery } from '@mui/material';
 import Head from 'next/head'
-import NextLink from 'next/link';
 import React, { useContext } from 'react'
 import { AuthContext } from '../../context/auth';
-import Footer from '../ui/Footer';
+import CloseSession from '../ui/CloseSession';
 import Navbar from '../ui/Navbar';
 import NavMobile from '../ui/NavMobile';
 
@@ -68,8 +67,8 @@ const MainLayout: React.FC<Props> = ({children, title, pageDescription}) => {
            </div>
           )
         }
+        <CloseSession />
         </main>
-        <Footer />
     </>
   )
 }

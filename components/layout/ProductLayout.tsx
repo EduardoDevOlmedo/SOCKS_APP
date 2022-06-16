@@ -1,11 +1,8 @@
-import { Divider, Grid, Link, Typography, useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import Head from 'next/head'
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react'
-import Footer from '../ui/Footer';
+import CloseSession from '../ui/CloseSession';
 import Navbar from '../ui/Navbar';
-import NavMobile from '../ui/NavMobile';
 import ProductNavbar from '../ui/products/ProductNavbar';
 
 interface Props {
@@ -44,7 +41,7 @@ const ProductLayout: React.FC<Props> = ({children, title, pageDescription}) => {
             children
         }
         </main>
-        <Footer />
+        <CloseSession />
     </>
   )
 }

@@ -1,41 +1,29 @@
 import { Facebook, Instagram, WhatsApp } from '@mui/icons-material'
-import { Button, IconButton, Typography } from '@mui/material'
+import { IconButton, Typography } from '@mui/material'
 import React, { useContext } from 'react'
 import { AuthContext } from '../../context/auth'
 
 const Footer = () => {
   
   const buttonStyles = {
-    width: {sm: '30px', md: '50px'},
-    height: {sm: '30px', md: '50px'}
+    width: {sm: '35px', md: '50px'},
+    height: {sm: '35px', md: '50px'},
+    color: '#FF9F10'
   }
 
   const {role, isLoggedIn, logout} = useContext(AuthContext)
 
 
   return (
-    <footer>
-      {
-        role !== "admin" && !isLoggedIn && (
-     <div>
+    <>
+      <div className="footerCont">
       <Typography
       sx={{
-        fontFamily: 'Nunito'
+        fontFamily: 'Nunito',
+        fontSize: '22px',
+        marginBottom: '10px'
       }}
-      >Skeletons Socks SV</Typography>
-      </div>
-        )
-      }
-      <div>
-        {
-          (role === 'admin' && isLoggedIn) && 
-          (
-            <Button variant="contained" 
-            onClick={logout}
-            color="warning">Salir</Button>
-          )
-        }
-      </div>
+      >Contacto</Typography>
        <div>
        <IconButton
         >
@@ -56,7 +44,8 @@ const Footer = () => {
             />
         </IconButton>
        </div>
-    </footer>
+    </div>
+    </>
   )
 }
 
