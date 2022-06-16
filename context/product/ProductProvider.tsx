@@ -1,5 +1,8 @@
+import { MergeTypeRounded } from '@mui/icons-material';
+import { initializeApp } from 'firebase/app';
 import { useEffect, useReducer } from 'react'
 import socksApi from '../../api/socksApi';
+import { firebaseConfig } from '../../firebase';
 import { IProduct } from '../../interfaces';
 import { ProductContext } from './ProductContext';
 import { ProductReducer } from './ProductReducer';
@@ -23,6 +26,10 @@ const ProductProvider: React.FC<Props> = ({children}) => {
 
 const [state, dispatch] = useReducer(ProductReducer, PRODUCTS_INITIAL_STATE)
 
+    useEffect(() => {
+     initializeApp(firebaseConfig)
+    }, [])
+
    const refreshProducts = async() => {
         const {data} = await socksApi.get('/actions')
         dispatch({
@@ -31,8 +38,8 @@ const [state, dispatch] = useReducer(ProductReducer, PRODUCTS_INITIAL_STATE)
         })
    }
 
-   const addProduct = async(title: string, description: string, price: number, image: string) => {
-       const {data} = await socksApi.post<IProduct>("/actions", {title: title, description: description, price: price, image: image})
+   const addProduct = async(title: string, description: string, price: number, image: string, type: string,  CTADescription: string, CTAPaymentMethods: string) => {
+       const {data} = await socksApi.post<IProduct>("/actions", {title: title, description: description, price: price, image: image, type: type, CTADescription: CTADescription, CTAPaymentMethods: CTAPaymentMethods})
        dispatch({
            type: 'Product - CREATE',
            payload: data
@@ -41,7 +48,7 @@ const [state, dispatch] = useReducer(ProductReducer, PRODUCTS_INITIAL_STATE)
 
    const updateProduct = async(product: IProduct) => {
        try {
-        const {data} = await socksApi.put<IProduct>(`products/${product._id}`, {title: product.title, description: product.description, image: product.image, price: product.price})
+        const {data} = await socksApi.put<IProduct>(`products/${product._id}`, {title: product.title, description: product.description, image: product.image, price: product.price, type: product.type, CTADescription: product.CTADescription, CTAPaymentMethods: product.CTAPaymentMethods})
         dispatch({
             type: 'Product - UPDATE',
             payload: data
@@ -52,10 +59,10 @@ const [state, dispatch] = useReducer(ProductReducer, PRODUCTS_INITIAL_STATE)
        }
    }
 
-   const deleteProduct = async(product: IProduct) => {
-       try {
+   const deleteProduct = async(product: IProduct, id: string) => {
+    try {
         const res = await socksApi.delete("/actions", {data: {
-            _Reqid: product._id 
+            _Reqid: id
         }})
         dispatch({
             type: 'Product - DELETE',

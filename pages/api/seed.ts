@@ -1,7 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '../../database'
-import Product from '../../models/Product'
+import { IUser } from '../../interfaces'
+import { User } from '../../models/User'
+import bcrypt from "bcryptjs"
 
 type Data = {
   message: string
@@ -11,21 +13,24 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>) {
 
-    const images = [
-      {
-        image: "https://www.adslzone.net/app/uploads-adslzone.net/2019/04/borrar-fondo-imagen.jpg"
-      },
-      {
-        image: "https://josefacchin.com/wp-content/uploads/2020/02/como-quitar-el-fondo-de-una-imagen.png"
-      }
-    ]
+    const adminMain: IUser = {
+        user: 'Skeletons Socks ADMIN',
+        password: bcrypt.hashSync('5s{t]AGG/SCK:QttRY4H'),
+        role: 'admin'
+    }
+
+
     await db.connect()
 
-    await Product.deleteMany()
-    await Product.insertMany(images)
-    
-    await db.disconnect()
+    await User.deleteMany()
 
-    res.status(200).send({message: 'Proceso realizado.'})
+    try {
+      await User.insertMany(adminMain)
+      return res.status(201).json({message: 'Successfully added user'})
+    } catch (error: any) {
+      await db.disconnect()
+      return res.status(400).json({message: error})
+    }
+    
 
 }

@@ -8,7 +8,6 @@ type Data = {
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     
-    console.log(req.query)
     
     switch (req.method) {
         case 'PUT':
@@ -35,11 +34,12 @@ const updateProduct =  async(req: NextApiRequest, res: NextApiResponse<Data>)  =
         description = productToUpdate.description,
         price = productToUpdate.price,
         image = productToUpdate.image,
-        type = productToUpdate.type
+        type = productToUpdate.type,
+        CTADescription = productToUpdate.CTADescription, CTAPaymentMethods = productToUpdate.CTAPaymentMethods
     } = req.body;
 
     try {
-        const updatedProduct = await Product.findByIdAndUpdate(id, {title, description, price, image}, {runValidators: true, new: true})
+        const updatedProduct = await Product.findByIdAndUpdate(id, {title, description, price, image, type, CTADescription, CTAPaymentMethods}, {runValidators: true, new: true})
         await db.disconnect()
         return res.status(201).json({message: 'Product was updated ' + updatedProduct})
         

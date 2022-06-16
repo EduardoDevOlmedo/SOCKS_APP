@@ -1,16 +1,206 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'Hemogoblin';
+  src: url('../fonts/hemogoblin.ttf');
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src: url('../fonts/Nunito-Bold.ttf');
+}
+
+body {
+    color: white;
+    background: #1C1C1C;
+}
+
+html{
+  position:relative; 
+  min-height: 100%;
+}
+
+:root {
+
+  /* Colors: */
+  --unnamed-color-f2ec78: #F2EC78;
+  --unnamed-color-ff9f10: #FF9F10;
+  --unnamed-color-402804: #402804;
+  --unnamed-color-707070: #707070;
+  --unnamed-color-b3b3b3: #B3B3B3;
+  --f1f1f1: #F1F1F1;
+  --unnamed-color-ffffff: #FFFFFF;
+  --unnamed-color-444444: #444444;
+  --unnamed-color-303030: #303030;
+  --unnamed-color-000000: #000000;
+  --unnamed-color-c80707: #C80707;
+  --unnamed-color-606060: #606060;
+  
+  /* Font/text values */
+  --unnamed-font-family-nunito: Nunito;
+  --unnamed-font-family-hemogoblin: Hemogoblin;
+  --unnamed-font-style-normal: normal;
+  --unnamed-font-weight-800: 800px;
+  --unnamed-font-weight-bold: bold;
+  --unnamed-font-weight-medium: medium;
+  --unnamed-font-weight-normal: normal;
+  --unnamed-font-size-24: 24px;
+  --unnamed-font-size-27: 27px;
+  --unnamed-font-size-45: 45px;
+  --unnamed-font-size-50: 50px;
+  --unnamed-font-size-52: 52px;
+  --unnamed-font-size-60: 60px;
+  --unnamed-font-size-70: 70px;
+  --unnamed-font-size-95: 95px;
+  --unnamed-character-spacing-0: 0px;
+  --unnamed-line-spacing-32: 32px;
+  --unnamed-line-spacing-37: 37px;
+  --unnamed-line-spacing-53: 53px;
+  --unnamed-line-spacing-59: 59px;
+  --unnamed-line-spacing-61: 61px;
+  --unnamed-line-spacing-62: 62px;
+  --unnamed-line-spacing-69: 69px;
+  --unnamed-line-spacing-71: 71px;
+  --unnamed-line-spacing-96: 96px;
+  --unnamed-line-spacing-130: 130px;
+  }
+
+.title {
+    font-family: Hemogoblin;
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-402804);
+    font-size: 40px;
+    letter-spacing: 0px;
+    color: #402804;
+    opacity: 1;
+}
+
+
+.icon {
+  position: absolute;
+  top: 7px;
+  left: 5%;
+  background-image: url('../assets/three-dots-svgrepo-com.svg');
+  background-size: cover;
+  width: 37px;
+  height: 37px;
+  transform: rotate(90deg);
+  cursor: pointer;
+}  
+
+.editDelete {
+  position: absolute;
+  background-color: #FFFFFF;
+  top: -35px;
+  border: 1px solid black;
+  border-radius: 10px;
+  left: 90%;
+  z-index: 1;
+  display: flex;
+}
+
+.arrow {
+  position: absolute;
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  top: 50%;
+  left: 5%;
+  transform: translate(-50%,-50%);
+}
+
+.product-title {
+  color: #fff;
+  font-family: 'Nunito';
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.image-container:after {
+  content: "";
+  display: block;
+}
+
+.hoverable {
+  transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
+
+}
+
+.hoverable:hover {
+  opacity: 0.8;
+  transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
+
+}
+
+.logTitle {
+  font-family: Hemogoblin;
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-402804);
+    font-size: 50px;
+    letter-spacing: 0px;
+    color: #FF9F10;
+    opacity: 1;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+
+.dottedInput {
+  width: 400px;
+}
+
+
+
+.typography {
+  font-family: Nunito;
+  font-size: 18px;
+  cursor: pointer
+}
+
+label span {
+  font-family: 'Nunito';
+  font-size: 18px;
+}
+
+input {
+  color: #fff !important;
+}
+
+.formControl {
+  width: fit-content;
+  margin: 0 auto;
+  text-align: center;
+}
+
+footer{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background:rgb(255, 255, 255);
+}
+
+@media only screen and (min-width: 1240px) {
+    .linkTo  {
+        font-size: 24px;
+    }
+}
+
+@media only screen and (max-width: 440px) {
+  .editDelete {
+    left: 70%;
+  }
+}
+
+
+@media only screen and (max-width: 400px) {
+  .title  {
+      font-size: 27px;
+  }
 }

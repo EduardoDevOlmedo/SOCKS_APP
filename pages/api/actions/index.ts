@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '../../../database';
 import Product from '../../../models/Product';
-import {storage} from "../../../firebase"
 import { IProduct } from '../../../interfaces';
 
 type Data = {
@@ -38,13 +37,16 @@ const getProducts  =async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 const postProduct = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
 
-    const {title = "", description = "", price = "", image = ""} = req.body
+    const {title = "", description = "", price = "", image = "", type = "", CTADescription = "", CTAPaymentMethods = ""} = req.body
  
     const newProduct = new Product({
         title, 
         description,
         price,
         image,
+        type,
+        CTADescription, 
+        CTAPaymentMethods
     })
     try {
         await db.connect()

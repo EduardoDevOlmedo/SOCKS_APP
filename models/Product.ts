@@ -6,6 +6,9 @@ const productSchema = new Schema({
     image: {type: String, required: true},
     price: {type: Number, required: true},
     description: {type: String, required: true},
+    type: {type: String, required: true},
+    CTADescription: {type: String, required: true}, 
+    CTAPaymentMethods: {type: String, required: true}
 })
 
 const Product: Model<IProduct> = mongoose.models.Product || mongoose.model('Product', productSchema );

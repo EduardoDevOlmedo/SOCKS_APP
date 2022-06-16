@@ -32,6 +32,8 @@ export const ProductReducer = (state: ProdState, action: ProductType):ProdState 
                         product.price = action.payload.price
                         product.image = action.payload.image
                         product.type = action.payload.type
+                        product.CTADescription = action.payload.CTADescription,
+                        product.CTAPaymentMethods = action.payload.CTAPaymentMethods
                     }
                     return product
                 })
