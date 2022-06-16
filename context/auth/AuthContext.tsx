@@ -3,9 +3,8 @@ import { IUser } from '../../interfaces';
 
 
 interface contextProps{
-    role: string;
+    role?: string | undefined;
     isLoggedIn: boolean;
-
     //metodos
     LoginUser: (user: string, password: string) => Promise<Boolean>;
     logout: () => void;

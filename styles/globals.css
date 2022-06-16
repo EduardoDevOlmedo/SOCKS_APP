@@ -70,11 +70,11 @@ html{
   }
 
 .title {
-    font-family: Hemogoblin;
+    font-family: Hemogoblin !important;
     letter-spacing: var(--unnamed-character-spacing-0);
     color: var(--unnamed-color-402804);
-    font-size: 40px;
-    letter-spacing: 0px;
+    font-size: 40px !important;
+    letter-spacing: 0px !important;
     color: #402804;
     opacity: 1;
 }
@@ -104,11 +104,11 @@ html{
 }
 
 .arrow {
-  position: absolute;
+  position: absolute !important;
   background-size: cover;
   width: 50px;
   height: 50px;
-  cursor: pointer;
+  cursor: pointer !important;
   top: 50%;
   left: 5%;
   transform: translate(-50%,-50%);
@@ -116,9 +116,9 @@ html{
 
 .product-title {
   color: #fff;
-  font-family: 'Nunito';
-  margin-bottom: 20px;
-  font-size: 22px;
+  font-family: 'Nunito' !important;
+  margin-bottom: 20px !important;
+  font-size: 22px !important;
 }
 
 .image-container:after {
@@ -183,7 +183,19 @@ footer{
   left: 0;
   right: 0;
   height: 50px;
-  background:rgb(255, 255, 255);
+  background: #303030;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Nunito;
+  color: #ffffff;
+  padding: 10px;
+}
+
+@media only screen and (min-width: 760px){
+  footer {
+    height: 70px;
+  }
 }
 
 @media only screen and (min-width: 1240px) {
@@ -201,6 +213,6 @@ footer{
 
 @media only screen and (max-width: 400px) {
   .title  {
-      font-size: 27px;
+      font-size: 27px !important;
   }
 }

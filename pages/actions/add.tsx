@@ -1,4 +1,4 @@
-import { Grid, Box, Typography, FormControl, RadioGroup, FormControlLabel, Radio, TextField, Button } from "@mui/material";
+import { Grid, Box, Typography, FormControl, RadioGroup, FormControlLabel, Radio, TextField, Button, Chip } from "@mui/material";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -34,6 +34,7 @@ const AddPage: NextPage = () => {
   const [image, setImage] = useState<null>(null)
   const [url, setUrl] = useState("");
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState(false)
 
   const [product, setProduct] = useState(
     {
@@ -102,24 +103,37 @@ const AddPage: NextPage = () => {
     }
     
   };
+
+  useEffect(() => {
+
+    if(product.type === '' || product.imgUrl === '') {
+      setError(true)
+    } else {
+      setError(false)
+    }
+    
+  }, [product.type, product.imgUrl])
   
 
   const handleAdd = (data: formData) => {
     
-
-
-    addProduct(
-      data.title,
-      data.description,
-      data.price,
-      product.imgUrl,
-      product.type,
-      data.CTADescription,
-      data.CTAPaymentMethods
-    )
-
-    router.replace("/")
-
+    if(product.type === '' || product.imgUrl === '') {
+      return;
+    } else {
+      setError(false)
+      addProduct(
+        data.title,
+        data.description,
+        data.price,
+        product.imgUrl,
+        product.type,
+        data.CTADescription,
+        data.CTAPaymentMethods
+      )
+  
+      router.replace("/")
+    }
+    
   }
   
  
@@ -133,7 +147,7 @@ const AddPage: NextPage = () => {
           marginTop: '40px'
         }} item xs={12} md={6} >
             <Box sx={{border: '3px dashed white', 
-             width: {xs: '270px', md:'400px'},
+             width: {xs: '290px', md:'420px'},
              margin: '0 auto',
              height: '500px',
              textAlign: 'center',
@@ -175,7 +189,11 @@ const AddPage: NextPage = () => {
                 paddingLeft: '30px'
               }}
             >
+              {
+                error && <Chip color="error" label="Todos los campos son requeridos."/>
+              }
               <RadioGroup onChange={handleInputChange} value={product.type} row
+                sx={{width: 'fit-content', margin: '0 auto'}}
                 aria-labelledby="radio-buttons-group-label" defaultValue="Calcetín" name="type">
                 <FormControlLabel disableTypography
                 value="calcetin" control={<Radio sx={{color: '#FF9F10 !important'}} />} label="Calcetín" />
@@ -216,6 +234,7 @@ const AddPage: NextPage = () => {
            }}
             />
              <TextField 
+             type="numher"
             placeholder='Precio'
             error={!!errors.price}
            helperText={errors.price?.message}

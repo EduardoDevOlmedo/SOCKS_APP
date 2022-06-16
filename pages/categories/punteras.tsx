@@ -18,6 +18,7 @@ const PunteraPage = () => {
             <ProductCard product={puntera}/>
           ))
         }
+        
       </Grid>
     </MainLayout>
   )

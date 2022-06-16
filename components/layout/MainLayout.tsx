@@ -1,8 +1,10 @@
-import { Divider, Grid, Link, Typography, useMediaQuery } from '@mui/material';
+import { Add } from '@mui/icons-material';
+import { IconButton,  useMediaQuery } from '@mui/material';
 import Head from 'next/head'
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../../context/auth';
+import Footer from '../ui/Footer';
 import Navbar from '../ui/Navbar';
 import NavMobile from '../ui/NavMobile';
 
@@ -16,8 +18,8 @@ const MainLayout: React.FC<Props> = ({children, title, pageDescription}) => {
   
   
   const matches = useMediaQuery('(max-width:800px)');
-  
-  
+  const {role} = useContext(AuthContext)
+
   return (
     <>
     <Head>
@@ -42,8 +44,32 @@ const MainLayout: React.FC<Props> = ({children, title, pageDescription}) => {
         {
             children
         }
+         {
+          (matches && role === 'admin') &&
+          (
+           <div>
+             <IconButton
+              href="/actions/add"
+              sx={{
+                background: '#FF9F10',
+                padding: '25px',
+                color: '#fff',
+                position: 'fixed',
+                left: '83%',
+                bottom: '10%'
+              }}
+             >
+                <Add 
+                  sx={{
+                    position: 'fixed'
+                  }}
+                />
+             </IconButton>
+           </div>
+          )
+        }
         </main>
-        <footer>Footer</footer>
+        <Footer />
     </>
   )
 }

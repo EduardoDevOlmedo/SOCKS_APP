@@ -45,7 +45,6 @@ const ProductPage: React.FC<Props> = ({product, id}) => {
   const handleDelete = (product: IProduct, id: string) => {
     deleteProduct(product, id)
     handleImageDelete(product.image)
-    router.reload()
   }
 
 
@@ -151,6 +150,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     return {
       props: {
           product: product ?? null, id
-      }, revalidate: 86400
+      }, revalidate: 5
     }
   }

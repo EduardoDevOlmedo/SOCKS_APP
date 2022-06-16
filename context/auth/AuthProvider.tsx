@@ -8,7 +8,7 @@ import { AuthReducer } from './authReducer';
 
 export interface AuthState {
     isLoggedIn: boolean;
-    role: string | undefined
+    role?: string | undefined
 }
 
 const AUTH_INITIAL_STATE: AuthState = {
@@ -49,6 +49,7 @@ const AuthProvider: React.FC<Props> = ({children}) => {
 
 
     const logout = () => {
+      Cookies.remove("role")
       dispatch({type: 'Auth - Logout'})
       router.reload()
     }
@@ -58,7 +59,6 @@ const AuthProvider: React.FC<Props> = ({children}) => {
         <AuthContext.Provider value={{
             ...state,
             //METODOS
-
             LoginUser,
             logout
         }}>

@@ -1,12 +1,13 @@
 import { MergeTypeRounded } from '@mui/icons-material';
 import { initializeApp } from 'firebase/app';
+import { useRouter } from 'next/router';
 import { useEffect, useReducer } from 'react'
 import socksApi from '../../api/socksApi';
 import { firebaseConfig } from '../../firebase';
 import { IProduct } from '../../interfaces';
 import { ProductContext } from './ProductContext';
 import { ProductReducer } from './ProductReducer';
-
+import { useSnackbar } from 'notistack';
 
 export interface ProdState {
    products: IProduct[];
@@ -25,6 +26,10 @@ interface Props {
 const ProductProvider: React.FC<Props> = ({children}) => {
 
 const [state, dispatch] = useReducer(ProductReducer, PRODUCTS_INITIAL_STATE)
+const router = useRouter()
+
+const { enqueueSnackbar} = useSnackbar();
+
 
     useEffect(() => {
      initializeApp(firebaseConfig)
@@ -44,6 +49,14 @@ const [state, dispatch] = useReducer(ProductReducer, PRODUCTS_INITIAL_STATE)
            type: 'Product - CREATE',
            payload: data
        })
+       enqueueSnackbar(`Se agregó ${title}. Se actualizará en unos segundos.`, {
+        variant: "success",
+        autoHideDuration: 1500,
+        anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right'
+        }
+    })
    }
 
    const updateProduct = async(product: IProduct) => {
@@ -53,7 +66,15 @@ const [state, dispatch] = useReducer(ProductReducer, PRODUCTS_INITIAL_STATE)
             type: 'Product - UPDATE',
             payload: data
         }) 
-        console.log('product updated ' + product)
+        router.replace("/")
+        enqueueSnackbar(`Se actualizó ${product.title} correctamente. Se actualizará en unos segundos.`, {
+            variant: "success",
+            autoHideDuration: 1500,
+            anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'right'
+            }
+        })
        } catch (error) {
            console.log(error)
        }
@@ -67,6 +88,15 @@ const [state, dispatch] = useReducer(ProductReducer, PRODUCTS_INITIAL_STATE)
         dispatch({
             type: 'Product - DELETE',
             payload: product
+        })
+        router.replace("/")
+        enqueueSnackbar(`Se borró ${product.title}. Se actualizará en unos segundos.`, {
+            variant: "warning",
+            autoHideDuration: 1500,
+            anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'right'
+            }
         })
        } catch (error) {
             throw new Error('An error has occurred ' + error)

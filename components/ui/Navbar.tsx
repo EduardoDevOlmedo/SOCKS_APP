@@ -64,21 +64,6 @@ const Navbar = () => {
                     </>  
                   )
                 }
-                 <NextLink passHref href={'/categories/punteras'}> 
-                    <Link underline="none" sx={{height: '65px', 
-                            background: path ===  '/categories/punteras' ? '#1E1E1E' : '#FF9F10',
-                            color: path === "/categories/punteras" ? '#FF9F10' : '#1E1E1E',
-                            display: 'flex', alignItems: 'center',
-                            padding: '10px'
-                        }}>
-                        <Typography className="linkTo" sx={{ 
-                            fontFamily: 'Nunito',
-                            fontSize: '20px',
-                            padding: '0 15px',
-                        textTransform: 'uppercase'}}>
-                           PUNTERAS</Typography>
-                        </Link>
-                    </NextLink>
                     <NextLink passHref href={'/categories/calcetines'}> 
                     <Link underline="none" sx={{height: '65px', 
                             background: path ===  '/categories/calcetines' ? '#1E1E1E' : '#FF9F10',
@@ -94,6 +79,21 @@ const Navbar = () => {
                           Calcetas</Typography>
                         </Link>
                     </NextLink> 
+                 <NextLink passHref href={'/categories/punteras'}> 
+                    <Link underline="none" sx={{height: '65px', 
+                            background: path ===  '/categories/punteras' ? '#1E1E1E' : '#FF9F10',
+                            color: path === "/categories/punteras" ? '#FF9F10' : '#1E1E1E',
+                            display: 'flex', alignItems: 'center',
+                            padding: '10px'
+                        }}>
+                        <Typography className="linkTo" sx={{ 
+                            fontFamily: 'Nunito',
+                            fontSize: '20px',
+                            padding: '0 15px',
+                        textTransform: 'uppercase'}}>
+                           PUNTERAS</Typography>
+                        </Link>
+                    </NextLink>
             </div>
                     </>
                 )

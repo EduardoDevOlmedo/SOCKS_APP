@@ -3,6 +3,7 @@ import Head from 'next/head'
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react'
+import Footer from '../ui/Footer';
 import Navbar from '../ui/Navbar';
 import NavMobile from '../ui/NavMobile';
 import ProductNavbar from '../ui/products/ProductNavbar';
@@ -43,8 +44,7 @@ const ProductLayout: React.FC<Props> = ({children, title, pageDescription}) => {
             children
         }
         </main>
-        <footer>Footer</footer>
-
+        <Footer />
     </>
   )
 }

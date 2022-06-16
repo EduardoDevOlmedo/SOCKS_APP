@@ -19,6 +19,7 @@ const CalcetinPage = () => {
             <ProductCard product={calcetin}/>
           ))
         }
+        
       </Grid>
     </MainLayout>
   )

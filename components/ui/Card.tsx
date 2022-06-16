@@ -13,41 +13,37 @@ interface Props {
 
 const ProductCard: React.FC<Props> = ({product}) => {
   
-    const [visibility, setVisibility] = useState(false)
 
     const {title, image, description, _id} = product
 
 
-    const handleClick = () => {
-      setVisibility(!visibility)
-    }
-  
 
     return (
       <Grid  container xs={12} md={3} item>
       <div style={{position: 'relative', width: '100%', height: 'auto', marginTop: '10px'}}>
       <NextLink href={`/product/${_id}`}>
       <Card   sx={{ width: '100%', height: '100%', display: {xs: 'flex', md: 'block'}}}>
-          <CardActionArea>
          <Grid item xs={6} md={12}>
+          <CardActionArea>
           <CardMedia 
             sx={{height: {xs: '190px', md: '350px', lg: '400px'},}}
             component='img'
             src={image}
-          ></CardMedia>
+            ></CardMedia>
+          </CardActionArea>
       </Grid>
         <Grid item xs={6} md={12} display="flex" alignItems="center">
                <CardContent sx={{textAlign: 'justify'}}>
+                <CardActionArea>
                  <Typography sx={{fontWeight: 'bold', letterSpacing: '0'}} gutterBottom component="div">
                    {title}
                  </Typography>
-                 <Typography sx={{color: '#000', letterSpacing: '0'}} variant="body2" color="text.secondary">
-                   {description}
+                 <Typography sx={{color: '#000', letterSpacing: '0', fontFamily: 'Nunito'}} variant="body2" color="text.secondary">
+                   {description.length > 70 ? description.substring(0,50) + '...' : description}
                  </Typography>
-
+                </CardActionArea>
                </CardContent>
              </Grid>
-          </CardActionArea>
          </Card>
       </NextLink>
       </div>

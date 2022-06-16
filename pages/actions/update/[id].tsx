@@ -1,9 +1,9 @@
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Box, Button, Chip, Grid, TextField, Typography } from "@mui/material";
 import { getStorage, ref, deleteObject, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { GetServerSideProps } from "next";
-import { Router, useRouter } from "next/router";
 import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../../context/auth";
+import { useForm } from "react-hook-form";
+import ProductLayout from "../../../components/layout/ProductLayout";
 import { ProductContext } from "../../../context/product";
 import { ProductFunctions } from "../../../database";
 import { IProduct } from "../../../interfaces";
@@ -14,12 +14,22 @@ interface Props {
   id: string;
 }
 
+type formData = {
+  title: string;
+  price: number;
+  imgUrl: string;
+  description: string;
+  type: string;
+  CTADescription: string;
+  CTAPaymentMethods: string;
+}
+
+
 const UpdatePage:React.FC<Props> = ({product, id}) => {
   
-  
-  const {role} = useContext(AuthContext) 
 
-  const router = useRouter()
+  const {handleSubmit, register, formState: {errors}} = useForm<formData>()
+  const [error, setError] = useState(false)
 
   const storage = getStorage()
   const {updateProduct} = useContext(ProductContext)
@@ -102,7 +112,7 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
             setUrl(url)
               setnewProduct({
                 ...newProduct,
-                image: url ? url : product.image
+                image: url ? url : newProduct.image
             })
         });;
         }
@@ -115,41 +125,181 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
    
   };
 
+  useEffect(() => {
 
-  const handleEdit = () => {
-    updateProduct(newProduct)
+    if(product.type === '' || product.image === '') {
+      setError(true)
+    } else {
+      setError(false)
+    }
+    
+  }, [newProduct.type, newProduct.image])
+
+  const handleEdit = (data: formData) => {    
+    updateProduct({
+      _id: newProduct._id,
+      title: data.title,
+      description: data.description,
+      price: data.price,
+      image: newProduct.image,
+      CTADescription: data.CTADescription,
+      CTAPaymentMethods: data.CTAPaymentMethods,
+      type: newProduct.type
+    })
     if(url === '') return;
-    handleImageDelete(product.image)
+    handleImageDelete(product.image);
+    
   }
 
   return (
-    <div>
-      <progress value={progress} max="100" />
-      <br />
-      <br />
-          <input name='title' value={newProduct.title} onChange={handleInputChange} placeholder="titulo" />
-          <input name='description' value={newProduct.description} onChange={handleInputChange} placeholder="descripcion" />
-          <input name='price' value={newProduct.price} onChange={handleInputChange} placeholder='PRECIO' type="number" />
-          <input name='CTADescription' value={product.CTADescription} onChange={handleInputChange} placeholder='Descripción CTA' type="text" />
-      <input name='CTAPaymentMethods' value={product.CTAPaymentMethods} onChange={handleInputChange} placeholder='Descripción CTA' type="text" />
+    <ProductLayout title="Editar" pageDescription='Editar producto'>
+      <Grid container>
+        <Grid sx={{
+          marginTop: '40px'
+        }} item xs={12} md={6} >
+            <Box sx={{border: '3px dashed white', 
+             width: {xs: '290px', md:'420px'},
+             margin: '0 auto',
+             height: '500px',
+             textAlign: 'center',
+            display: 'grid',
+            placeContent: 'center',
+             }}>
+          <div>
+            <input onChange={handleChange} accept="image/png,image/jpeg,image/jpg" type="file" name="uploadfile" id="img" style={{display: 'none'}}/>
+            <label 
+            className="typography"
+            htmlFor="img">Editar Foto</label>
+            <Typography>{progress}%</Typography> 
+          </div>
+                <img 
+            width={'100%'}
+            height={'440px'}
+            style={{objectFit: 'cover'}}
+            src={newProduct.image}></img>
+            </Box>
+        </Grid>
+        <Grid sx={{
+          marginTop: '40px'
 
-          <input  accept="image/png,image/jpeg,image/jpg" type="file" onChange={handleChange} />
-          <FormControl>
-            <FormLabel id="radio-buttons-group-label">Tipo</FormLabel>
-            <RadioGroup onChange={handleInputChange} value={newProduct.type} row
-              aria-labelledby="radio-buttons-group-label" defaultValue="Calcetín" name="type">
-              <FormControlLabel value="calcetin" control={<Radio />} label="Calcetín" />
-              <FormControlLabel value="puntera" control={<Radio />} label="Puntera" />
-            </RadioGroup>
-          </FormControl>
-          <button onClick={handleEdit}>Editar</button>
-      <br />
-      {url}
-      <br />
-      <img style={{height: '200px'}} src={product.image || "http://via.placeholder.com/300"} alt="firebase-image" />
-      // NUEVA IMAGEN
-      <img style={{height: '200px'}} src={url || "http://via.placeholder.com/300"} alt="firebase-image" />
-    </div>
+        }} item xs={12} md={6} >
+          <form onSubmit={handleSubmit(handleEdit)} className="formControl">
+            <Typography variant="h4">Editar </Typography>
+            <FormControl
+              sx={{
+                fontFamily: 'Nunito',
+                fontSize: '23px',
+                marginTop: '20px',
+                paddingLeft: '30px'
+              }}
+            >
+              {
+                error && <Chip color="error" label="Todos los campos son requeridos."/>
+              }
+              <RadioGroup onChange={handleInputChange} value={newProduct.type} row
+                sx={{width: 'fit-content', margin: '0 auto'}}
+                aria-labelledby="radio-buttons-group-label" defaultValue={product.type} name="type">
+                <FormControlLabel disableTypography
+                value="calcetin" control={<Radio sx={{color: '#FF9F10 !important'}} />} label="Calcetín" />
+                <FormControlLabel disableTypography
+                value="puntera" control={<Radio sx={{color: '#FF9F10 !important'}} />} label="Puntera" />
+              </RadioGroup>
+            <div style={{marginTop: '20px'}}>
+            <TextField 
+            defaultValue={product.title}
+             sx={{width: '90%', 
+             margin: '0 auto',
+             color: '#fff',
+             fontFamily: 'Nunito',
+             borderBottom: '3px solid #707070'
+           }}
+           error={!!errors.title}
+           helperText={errors.title?.message}
+           {
+            ...register("title", {
+              required: 'El título es requerido',
+            })
+           }
+            />
+             <TextField  
+            defaultValue={`${product.description}`}
+            error={!!errors.description}
+           helperText={errors.description?.message}
+            {
+             ...register("description", {
+               required: 'La descripción es requerida',
+             })
+            }
+             sx={{width: '90%', 
+             margin: '0 auto',
+             color: '#fff',
+             fontFamily: 'Nunito',
+             borderBottom: '3px solid #707070'
+           }}
+            />
+             <TextField 
+             type="numher"
+             defaultValue={`${product.price}`}
+            error={!!errors.price}
+           helperText={errors.price?.message}
+            {
+             ...register("price", {
+               required: 'El precio es requerido',
+             })
+            }
+             sx={{width: '90%',  
+             margin: '0 auto',
+             color: '#fff',
+             fontFamily: 'Nunito',
+             borderBottom: '3px solid #707070'
+           }}
+            />
+             <TextField  
+            defaultValue={`${product.CTADescription}`}
+            error={!!errors.CTADescription}
+            helperText={errors.CTADescription?.message}
+            {
+             ...register("CTADescription", {
+               required: 'La descripción del CTA es requerida',
+             })
+            }
+             sx={{width: '90%', 
+             margin: '0 auto',
+             color: '#fff',
+             fontFamily: 'Nunito',
+             borderBottom: '3px solid #707070'
+           }}
+            />
+             <TextField  
+            defaultValue={`${product.CTAPaymentMethods}`}
+            error={!!errors.CTAPaymentMethods}
+            helperText={errors.CTAPaymentMethods?.message}
+            {
+              ...register("CTAPaymentMethods", {
+                required: 'Los tipos de pago son requeridos.',
+              })
+             }
+             sx={{width: '90%', 
+             margin: '0 auto',
+             color: '#fff',
+             fontFamily: 'Nunito',
+             borderBottom: '3px solid #707070'
+           }}
+            />
+             <Button variant="contained" type='submit' sx={{
+        background: '#FF9F10',
+        margin: '40px auto',
+        width: 'fit-content',
+        fontFamily: 'Nunito',
+        color: '#080808',
+        borderRadius: '20px'
+      }}>Editar</Button>
+            </div>
+            </FormControl>
+          </form>
+        </Grid>
+      </Grid>
+    </ProductLayout>
   )
 }
 
