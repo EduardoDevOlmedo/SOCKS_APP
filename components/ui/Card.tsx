@@ -26,7 +26,7 @@ const ProductCard: React.FC<Props> = ({product}) => {
          <Grid item xs={6} md={12}>
           <CardActionArea>
           <CardMedia 
-            sx={{height: {xs: '190px', md: '350px', lg: 'auto'},}}
+            sx={{height: {xs: '190px', md: '350px'},}}
             component='img'
             src={image}
             ></CardMedia>

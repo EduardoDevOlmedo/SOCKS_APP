@@ -1,9 +1,9 @@
-import { GetStaticProps, NextPage } from "next"
+import { GetServerSideProps, GetStaticProps, NextPage } from "next"
 import { ProductFunctions } from "../database"
 
 import React, { useContext, useEffect } from 'react'
 import MainLayout from "../components/layout/MainLayout"
-import {  Grid, IconButton, useMediaQuery} from "@mui/material"
+import {  Grid,  useMediaQuery} from "@mui/material"
 import { IProduct } from "../interfaces"
 import ProductCard from "../components/ui/Card"
 import { Add } from "@mui/icons-material"
@@ -15,9 +15,7 @@ interface Props {
 
 const Home: NextPage<Props> = ({data}) => {
 
-  const matches = useMediaQuery('(max-width: 800px)')
 
-  const {role} = useContext(AuthContext)
 
   return (
     <MainLayout title="Skeletons Socks kSV - Home" pageDescription="Skeletons Socks SV Oficial Page">
@@ -35,12 +33,12 @@ const Home: NextPage<Props> = ({data}) => {
 
 export default Home
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const data = await ProductFunctions.getProducts() // your fetch function here 
     
     return {
       props: {
         data
-      }, revalidate: 5
+      }
     }
 }

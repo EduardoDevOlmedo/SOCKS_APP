@@ -26,18 +26,24 @@ const Footer = () => {
       >Contacto</Typography>
        <div>
        <IconButton
+          href='https://www.instagram.com/skeletonsocks.sv/?hl=es-la'
+          target="_blank" 
         >
             <Instagram 
             sx={buttonStyles}
             />
         </IconButton>
         <IconButton
+          href="https://wa.me/50376232064"
+          target="_blank" 
         >
             <WhatsApp 
           sx={buttonStyles}
             />
         </IconButton>
-        <IconButton 
+        <IconButton
+          href='https://www.facebook.com/Skeletons-socks-SV-100477068590540'
+          target="_blank" 
         >
             <Facebook 
             sx={buttonStyles}
