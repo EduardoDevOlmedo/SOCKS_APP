@@ -17,7 +17,7 @@ const NavMobile = () => {
           color: path === '/categories/calcetines' ? '#FF9F10' : '#ffffff',
           fontSize: '20px',
          textTransform: 'uppercase'}}>
-          Calcetines</Typography>
+          Calcetas</Typography>
       </Link>
       </NextLink>
     </Grid>

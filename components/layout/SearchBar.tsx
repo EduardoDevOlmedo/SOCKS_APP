@@ -20,7 +20,7 @@ const SearchBar = () => {
     marginTop: '20px'
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px', 
-      border: '5px solid #FF9F10',width: '1200px', 
+      border: '4px solid #FF9F10',width: '1200px', 
       borderRadius: '45px', padding: '10px',
       maxWidth: '90%' }}>
         <IconButton type="submit" 
