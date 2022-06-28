@@ -25,6 +25,9 @@ export default async function handler(
     await User.deleteMany()
 
     try {
+      if(process.env.NODE_ENV === 'production'){
+      return res.status(401).json({message: 'Unauthorized.'})
+      }
       await User.insertMany(adminMain)
       return res.status(201).json({message: 'Successfully added user'})
     } catch (error: any) {
