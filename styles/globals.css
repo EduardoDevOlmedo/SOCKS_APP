@@ -150,6 +150,18 @@ html{
 }
 
 
+.noBottomBorder:after, .noBottomBorder:before, .noBottomBorder:hover {
+  border-bottom: none;
+}  
+
+
+#search::placeholder {
+  color: #8F8F8F !important;
+  letter-spacing: 2px;
+  font-family: Nunito;
+  font-size: 20px;
+}
+
 .dottedInput {
   width: 400px;
 }

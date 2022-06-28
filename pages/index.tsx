@@ -18,8 +18,8 @@ const Home: NextPage<Props> = ({data}) => {
 
 
   return (
-    <MainLayout title="Skeletons Socks kSV - Home" pageDescription="Skeletons Socks SV Oficial Page">
-      <Grid container spacing={2} sx={{mt: 5, width:'100%', textAlign: 'center'}}>
+    <MainLayout title="Skeletons Socks SV - Home" pageDescription="Skeletons Socks SV Oficial Page">
+      <Grid container spacing={2} sx={{mt: 2.5, width:'100%', textAlign: 'center'}}>
         {
           data.map(product => (
             <ProductCard key={product._id} product={product}

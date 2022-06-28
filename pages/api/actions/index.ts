@@ -37,7 +37,7 @@ const getProducts  =async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 const postProduct = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
 
-    const {title = "", description = "", price = "", image = "", type = "", CTADescription = "", CTAPaymentMethods = ""} = req.body
+    const {title = "", description = "", price = "", image = "", type = "", CTADescription = "", CTAPaymentMethods = "", tags = []} = req.body
  
     const newProduct = new Product({
         title, 
@@ -46,7 +46,8 @@ const postProduct = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
         image,
         type,
         CTADescription, 
-        CTAPaymentMethods
+        CTAPaymentMethods,
+        tags
     })
     try {
         await db.connect()

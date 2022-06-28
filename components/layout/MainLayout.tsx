@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/auth';
 import CloseSession from '../ui/CloseSession';
 import Navbar from '../ui/Navbar';
 import NavMobile from '../ui/NavMobile';
+import SearchBar from './SearchBar';
 
 interface Props {
     children: JSX.Element | JSX.Element[]
@@ -40,6 +41,9 @@ const MainLayout: React.FC<Props> = ({children, title, pageDescription}) => {
        <NavMobile />
       ) 
     }
+
+    <SearchBar />
+
         {
             children
         }

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
 import { ProductFunctions } from '../../database'
 import { IProduct } from '../../interfaces'
 import { Card, CardContent, Grid, IconButton, Tooltip, Typography } from '@mui/material'
@@ -120,20 +120,8 @@ const ProductPage: React.FC<Props> = ({product, id}) => {
 export default ProductPage
 
 
-export const getStaticPaths: GetStaticPaths = async (ctx) => {
-    const slug = await ProductFunctions.getProducts() // your fetch function here 
-    const ids = slug.map(el => el._id)
 
-    return {
-        paths: ids.map(id => ({
-            params: {id}
-        })),
-        fallback: "blocking"
-    }
-}
-
-
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { id } = ctx.params as {id: string}  
   
     const product = await ProductFunctions.getProductById(id)
@@ -152,6 +140,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     return {
       props: {
           product: product ?? null, id
-      }, revalidate: 5
+      }
     }
   }

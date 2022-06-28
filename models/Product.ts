@@ -1,4 +1,5 @@
-import mongoose, {Model, Schema} from "mongoose";
+import mongoose, { Schema, model, Model } from 'mongoose';
+
 import { IProduct } from "../interfaces";
 
 const productSchema = new Schema({
@@ -8,10 +9,16 @@ const productSchema = new Schema({
     description: {type: String, required: true},
     type: {type: String, required: true},
     CTADescription: {type: String, required: true}, 
-    CTAPaymentMethods: {type: String, required: true}
+    CTAPaymentMethods: {type: String, required: true},
+    tags: {type: Array, required: true}
 })
 
-const Product: Model<IProduct> = mongoose.models.Product || mongoose.model('Product', productSchema );
+
+productSchema.index({title: 'text', tags: 'text'})
+
+
+const Product: Model<IProduct> = mongoose.models.Product || model('Product', productSchema );
+
 
 
 export default Product

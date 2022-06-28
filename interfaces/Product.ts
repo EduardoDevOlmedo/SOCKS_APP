@@ -10,4 +10,5 @@ export interface IProduct {
     type: string;
     CTADescription: string;
     CTAPaymentMethods: string;
+    tags: string[]
 }

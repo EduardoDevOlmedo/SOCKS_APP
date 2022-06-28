@@ -43,8 +43,8 @@ const { enqueueSnackbar} = useSnackbar();
         })
    }
 
-   const addProduct = async(title: string, description: string, price: number, image: string, type: string,  CTADescription: string, CTAPaymentMethods: string) => {
-       const {data} = await socksApi.post<IProduct>("/actions", {title: title, description: description, price: price, image: image, type: type, CTADescription: CTADescription, CTAPaymentMethods: CTAPaymentMethods})
+   const addProduct = async(title: string, description: string, price: number, image: string, type: string,  CTADescription: string, CTAPaymentMethods: string, tags: string[]) => {
+       const {data} = await socksApi.post<IProduct>("/actions", {title: title, description: description, price: price, image: image, type: type, CTADescription: CTADescription, CTAPaymentMethods: CTAPaymentMethods, tags: tags})
        dispatch({
            type: 'Product - CREATE',
            payload: data
@@ -61,7 +61,7 @@ const { enqueueSnackbar} = useSnackbar();
 
    const updateProduct = async(product: IProduct) => {
        try {
-        const {data} = await socksApi.put<IProduct>(`products/${product._id}`, {title: product.title, description: product.description, image: product.image, price: product.price, type: product.type, CTADescription: product.CTADescription, CTAPaymentMethods: product.CTAPaymentMethods})
+        const {data} = await socksApi.put<IProduct>(`products/${product._id}`, {title: product.title, description: product.description, image: product.image, price: product.price, type: product.type, CTADescription: product.CTADescription, CTAPaymentMethods: product.CTAPaymentMethods, tags: product.tags})
         dispatch({
             type: 'Product - UPDATE',
             payload: data
@@ -103,6 +103,8 @@ const { enqueueSnackbar} = useSnackbar();
        }
    }
     
+
+   
 
    useEffect(() => {
         refreshProducts()

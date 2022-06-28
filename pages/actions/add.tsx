@@ -17,6 +17,7 @@ type formData = {
       type: string;
       CTADescription: string;
       CTAPaymentMethods: string;
+      tags: string;
 }
 
 const AddPage: NextPage = () => {
@@ -44,7 +45,8 @@ const AddPage: NextPage = () => {
       description: '',
       type: '',
       CTADescription: '',
-      CTAPaymentMethods: ''
+      CTAPaymentMethods: '',
+      tags: []
     }
   )
 
@@ -117,6 +119,9 @@ const AddPage: NextPage = () => {
 
   const handleAdd = (data: formData) => {
     
+    const tags = data.tags.split(",").map(el => el.toLowerCase())
+
+
     if(product.type === '' || product.imgUrl === '') {
       return;
     } else {
@@ -128,7 +133,8 @@ const AddPage: NextPage = () => {
         product.imgUrl,
         product.type,
         data.CTADescription,
-        data.CTAPaymentMethods
+        data.CTAPaymentMethods,
+        tags
       )
   
       router.replace("/")
@@ -282,6 +288,22 @@ const AddPage: NextPage = () => {
              borderBottom: '3px solid #707070'
            }}
             />
+             <TextField  
+            placeholder='Etiquetas: Escribalas separadas por una coma. '
+            error={!!errors.tags}
+            helperText={errors.tags?.message}
+            {
+              ...register("tags", {
+                required: 'Escriba al menos una etiqueta.',
+              })
+             }
+             sx={{width: '90%', 
+             margin: '0 auto',
+             color: '#fff',
+             fontFamily: 'Nunito',
+             borderBottom: '3px solid #707070'
+           }}
+           />
              <Button variant="contained" type='submit' sx={{
         background: '#FF9F10',
         margin: '40px auto',

@@ -35,11 +35,12 @@ const updateProduct =  async(req: NextApiRequest, res: NextApiResponse<Data>)  =
         price = productToUpdate.price,
         image = productToUpdate.image,
         type = productToUpdate.type,
-        CTADescription = productToUpdate.CTADescription, CTAPaymentMethods = productToUpdate.CTAPaymentMethods
+        CTADescription = productToUpdate.CTADescription, CTAPaymentMethods = productToUpdate.CTAPaymentMethods,
+        tags =  productToUpdate.tags
     } = req.body;
 
     try {
-        const updatedProduct = await Product.findByIdAndUpdate(id, {title, description, price, image, type, CTADescription, CTAPaymentMethods}, {runValidators: true, new: true})
+        const updatedProduct = await Product.findByIdAndUpdate(id, {title, description, price, image, type, CTADescription, CTAPaymentMethods, tags}, {runValidators: true, new: true})
         await db.disconnect()
         return res.status(201).json({message: 'Product was updated ' + updatedProduct})
         

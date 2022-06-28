@@ -22,6 +22,7 @@ type formData = {
   type: string;
   CTADescription: string;
   CTAPaymentMethods: string;
+  tags: string;
 }
 
 
@@ -45,7 +46,8 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
       image: '',
       type: '',
       CTADescription: '',
-      CTAPaymentMethods: ''
+      CTAPaymentMethods: '',
+      tags: []
     }
   )
 
@@ -71,7 +73,7 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
 
   const handleInputChange = (e: any) => {
     setnewProduct({
-      ...product,
+      ...newProduct,
       [e.target.name]: e.target.value,
       _id: id
     })
@@ -119,7 +121,7 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
       );
      
     } catch (error) {
-      // console.log(error)   
+      console.log(error)   
     }
    
    
@@ -127,15 +129,20 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
 
   useEffect(() => {
 
+    console.log(product.tags)
+
     if(product.type === '' || product.image === '') {
       setError(true)
     } else {
       setError(false)
     }
     
-  }, [newProduct.type, newProduct.image])
+  }, [])
 
   const handleEdit = (data: formData) => {    
+    
+
+    
     updateProduct({
       _id: newProduct._id,
       title: data.title,
@@ -144,7 +151,8 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
       image: newProduct.image,
       CTADescription: data.CTADescription,
       CTAPaymentMethods: data.CTAPaymentMethods,
-      type: newProduct.type
+      type: newProduct.type,
+      tags: data.tags.split(",").map(el => el.toLowerCase())
     })
     if(url === '') return;
     handleImageDelete(product.image);
@@ -176,7 +184,7 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
             width={'100%'}
             height={'440px'}
             style={{objectFit: 'cover'}}
-            src={newProduct.image}></img>
+            src={newProduct.image ? newProduct.image : product.image}></img>
             </Box>
         </Grid>
         <Grid sx={{
@@ -222,7 +230,7 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
            }
             />
              <TextField  
-            defaultValue={`${product.description}`}
+            defaultValue={`${product.description}`} 
             error={!!errors.description}
            helperText={errors.description?.message}
             {
@@ -286,6 +294,22 @@ const UpdatePage:React.FC<Props> = ({product, id}) => {
              borderBottom: '3px solid #707070'
            }}
             />
+             <TextField  
+            defaultValue={`${product.tags}`} 
+            error={!!errors.tags}
+            helperText={errors.tags?.message}
+            {
+              ...register("tags", {
+                required: 'Escriba al menos una etiqueta.',
+              })
+             }
+             sx={{width: '90%', 
+             margin: '0 auto',
+             color: '#fff',
+             fontFamily: 'Nunito',
+             borderBottom: '3px solid #707070'
+           }}
+           />
              <Button variant="contained" type='submit' sx={{
         background: '#FF9F10',
         margin: '40px auto',
