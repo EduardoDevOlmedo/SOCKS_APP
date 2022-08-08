@@ -26,7 +26,7 @@ const getProductByTitle = async(req: NextApiRequest, res: NextApiResponse<Data>)
     if(q!.length === 0) return res.status(400).json({message: 'Bad request'})
 
     const products = await Product.find({
-        $text: {$search: q.toString()}
+        $text: {$search: q!.toString()}
     }).lean()
 
     return res.status(202).json(products)
