@@ -204,6 +204,16 @@ footer{
   padding: 10px;
 }
 
+.onHover {
+  transition: cubic-bezier(0.165, 0.84, 0.44, 1) 0.2s; 
+}
+
+.onHover:hover {
+  opacity: 0.8;
+  background-color: #000 !important;
+  transition: cubic-bezier(0.165, 0.84, 0.44, 1) 0.2s; 
+}
+
 .footerCont {
   display: flex;
   flex-direction: column;
