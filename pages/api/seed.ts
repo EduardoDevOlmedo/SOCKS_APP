@@ -14,8 +14,8 @@ export default async function handler(
   res: NextApiResponse<Data>) {
 
     const adminMain: IUser = {
-        user: 'Skeletons Socks ADMIN',
-        password: bcrypt.hashSync('5s{t]AGG/SCK:QttRY4H'),
+        user: 'prueba',
+        password: 'prueba',
         role: 'admin'
     }
 
