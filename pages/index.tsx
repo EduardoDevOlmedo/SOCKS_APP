@@ -7,11 +7,15 @@ import { IProduct, ProductsResponse } from "../interfaces"
 import ProductCard from "../components/ui/Card"
 import useSWR from "swr"
 import CircularProgress from '@mui/material/CircularProgress';
+import Cookies from "js-cookie"
+import { ProductContext } from "../context/product"
 
 
 const Home: NextPage = () => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  let [productsAmount, setProductsAmount] = useState(8)
+  const {loadMoreProducts, productsAmount} = useContext(ProductContext)
+
+  const role = Cookies.get("role")
 
   const { data, error } = useSWR<ProductsResponse>(`/api/products?quantity=${productsAmount}`, fetcher)
 
@@ -50,7 +54,7 @@ const Home: NextPage = () => {
           data.quantity !== data.products.length ?
           (<Chip 
             className="onHover"
-            onClick={() => setProductsAmount(productsAmount + 8)}
+            onClick={() =>  loadMoreProducts(role === 'admin' ? 100 : 8)}
             sx={{color: '#fff'}}
             clickable
             label="Ver más" variant="outlined"/>) : undefined

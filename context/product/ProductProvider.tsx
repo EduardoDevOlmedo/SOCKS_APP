@@ -11,10 +11,12 @@ import { useSnackbar } from 'notistack';
 
 export interface ProdState {
    products: IProduct[];
+   productsAmount: number
 }
 
 const PRODUCTS_INITIAL_STATE : ProdState = {
-    products: []
+    products: [],
+    productsAmount: 8
 }
 
 
@@ -58,6 +60,7 @@ const { enqueueSnackbar} = useSnackbar();
         }
     })
    }
+
 
    const updateProduct = async(product: IProduct) => {
        try {
@@ -110,9 +113,17 @@ const { enqueueSnackbar} = useSnackbar();
         refreshProducts()
    }, [state.products])
 
+
+   const loadMoreProducts = (factor: number) => {
+     dispatch({
+        type: 'ProducAmount - Add',
+        payload: factor
+     })
+   }
+
     return (
         <ProductContext.Provider value={{
-            ...state, refreshProducts, addProduct, updateProduct, deleteProduct
+            ...state, refreshProducts, addProduct, updateProduct, deleteProduct, loadMoreProducts,
         }}>
            {
                children

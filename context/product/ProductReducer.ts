@@ -6,6 +6,8 @@ type ProductType =
 |{ type: "Product - READ", payload: IProduct[]} 
 |{ type: "Product - UPDATE", payload: IProduct}
 |{ type: "Product - DELETE", payload: IProduct}
+|{ type: "ProducAmount - Add", payload: number}
+
 
 
 
@@ -45,6 +47,11 @@ export const ProductReducer = (state: ProdState, action: ProductType):ProdState 
                     products: state.products.filter(product => {
                        return product._id !== action.payload._id
                     })
+                }
+        case 'ProducAmount - Add': 
+                return {
+                    ...state,
+                    productsAmount: state.productsAmount + action.payload
                 }
         default:
             return state;
